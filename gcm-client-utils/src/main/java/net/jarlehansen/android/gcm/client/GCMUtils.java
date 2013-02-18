@@ -19,10 +19,10 @@ import java.util.List;
  * Utilities for Google Cloud Messaging.
  * <p>Features:
  * <ul>
- * <li>Registration id handling (both for registration and unregistration), automatically send a request to a server containing the registration id. Supports features such as exponential backoff.
+ * <li>Registration id handling (both for registration and unregistration), that will automatically send a request to a server containing the registration id. Supports features such as exponential backoff.
  * <li>Extended verification of project with {@link GCMUtils#checkExtended(android.content.Context)}. Verifies the GCM service created in the project.
- * <li>Uses a properties file ({@code gcmutils.properties}) to make it easy to provide configuration options, such as {@code receiver-url} and {@code sender-id}.
- * <li>An alternative base intent service ({@link GCMUtilsBaseIntentService}), that includes a few helper methods. Such as automatic registrationId handling.
+ * <li>Uses the file {@code gcmutils.properties} to make it easy to provide configuration options, such as {@code receiver-url} and {@code sender-id}.
+ * <li>An alternative base intent service ({@link GCMUtilsBaseIntentService}), that includes a few helper methods, such as automatic registrationId handling.
  * </ul>
  * <p/>
  * User: Jarle Hansen (hansjar@gmail.com)
