@@ -1,5 +1,6 @@
 .idea
 *.iml
+*.sh
 default.properties
 gcmutils.properties
 target

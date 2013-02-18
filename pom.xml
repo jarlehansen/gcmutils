@@ -29,6 +29,18 @@
         </dependency>
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>gcmutils-repo-releases</id>
+            <url>dav:https://gcmutils.googlecode.com/svn/trunk/repository/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>gcmutils-repo-snapshots</id>
+            <url>dav:https://gcmutils.googlecode.com/svn/trunk/repository/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
     <modules>
         <module>gcm-common-utils</module>
         <module>gcm-manifest-utils</module>
