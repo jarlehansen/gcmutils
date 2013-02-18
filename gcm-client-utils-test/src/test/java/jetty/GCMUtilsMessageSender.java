@@ -1,5 +1,8 @@
 package jetty;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,6 +14,7 @@ import java.net.URLEncoder;
  * Time: 1:35 PM
  */
 public class GCMUtilsMessageSender {
+    private static Logger logger = LoggerFactory.getLogger(GCMUtilsMessageSender.class);
 
     public static void main(String[] args) throws IOException {
         String msg = "this is a test message";
@@ -22,6 +26,6 @@ public class GCMUtilsMessageSender {
         int responseCode = connection.getResponseCode();
         connection.disconnect();
 
-        System.out.println("Response: " + responseCode);
+        logger.info("Response: {}", responseCode);
     }
 }

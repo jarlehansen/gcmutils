@@ -2,8 +2,8 @@ package net.jarlehansen.android.gcm.client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -15,7 +15,7 @@ public class GCMIntentService extends GCMUtilsBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         String msg = intent.getStringExtra(GCMUtilsConstants.DATA_KEY_MSG);
-        Log.i(GCMUtilsConstants.TAG, "onMessage: " + msg);
+        GCMUtilsLog.i("onMessage: ", msg);
 
         Intent appIntent = new Intent(GCMUtilsTestActivity.DISPLAY_INFO_ACTION);
         appIntent.putExtra(GCMUtilsConstants.DATA_KEY_MSG, msg);
@@ -24,7 +24,7 @@ public class GCMIntentService extends GCMUtilsBaseIntentService {
 
     @Override
     protected void onError(Context context, String msg) {
-        Log.i(GCMUtilsConstants.TAG, "onError: " + msg);
+        GCMUtilsLog.e("onError: ", msg);
     }
 
     @Override

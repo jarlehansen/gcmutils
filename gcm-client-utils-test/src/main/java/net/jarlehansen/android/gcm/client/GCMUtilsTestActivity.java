@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gcm.GCMRegistrar;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
 
 public class GCMUtilsTestActivity extends Activity {
@@ -22,7 +22,7 @@ public class GCMUtilsTestActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(GCMUtilsConstants.TAG, "Started: " + this.getClass().getSimpleName());
+        GCMUtilsLog.i("Started: ", this.getClass().getSimpleName());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);

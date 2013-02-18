@@ -2,8 +2,8 @@ package net.jarlehansen.android.gcm.client.properties;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,10 +40,10 @@ public enum GCMUtilsProperties {
                 InputStream inputStream = assetManager.open(fileName);
                 properties = new Properties();
                 properties.load(inputStream);
-                Log.i(GCMUtilsConstants.TAG, "Loaded file '" + fileName + "'");
+                GCMUtilsLog.i("Loaded file '", fileName, "'");
                 return true;
             } catch (IOException io) {
-                Log.i(GCMUtilsConstants.TAG, "Unable to open '" + fileName + "'", io);
+                GCMUtilsLog.i("Unable to open '" + fileName + "'", io);
                 return false;
             }
         } else
@@ -55,7 +55,7 @@ public enum GCMUtilsProperties {
             return "";
         else {
             String value = properties.getProperty(key);
-            Log.d(GCMUtilsConstants.TAG, "Loaded property " + key + "=" + value);
+            GCMUtilsLog.d("Loaded property ", key, "=", value);
             return value == null ? "" : value;
         }
     }

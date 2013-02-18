@@ -1,7 +1,6 @@
 package net.jarlehansen.android.gcm.client.sender;
 
-import android.util.Log;
-import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -11,6 +10,6 @@ import net.jarlehansen.android.gcm.GCMUtilsConstants;
 public class DefaultGCMSenderCallback implements GCMSenderCallback {
     @Override
     public void onRequestSent(GCMSenderResponse response) {
-        Log.i(GCMUtilsConstants.TAG, "Status from regIdSender: " + response);
+        GCMUtilsLog.i("Status from regIdSender: ", response.toString());
     }
 }

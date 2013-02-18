@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
-import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
-import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -52,7 +51,7 @@ enum GCMUtilsVerifier {
         try {
             Object o = Class.forName(serviceName).newInstance();
             if (o instanceof GCMBaseIntentService)
-                Log.i(GCMUtilsConstants.TAG, "Found GCMIntentService: " + serviceName);
+                GCMUtilsLog.i("Found GCMIntentService: ", serviceName);
             else
                 throw new IllegalStateException(o.getClass().getName() + " is not extending " + GCMBaseIntentService.class.getName());
         } catch (InstantiationException e) {

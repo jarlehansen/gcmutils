@@ -2,9 +2,9 @@ package net.jarlehansen.android.gcm.client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
 
 /**
@@ -28,10 +28,10 @@ public abstract class GCMUtilsBaseIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onMessage(Context context, Intent intent) {
-        Log.i(GCMUtilsConstants.TAG, "onMessage");
+        GCMUtilsLog.i("onMessage");
         if (intent.hasExtra(GCMUtilsConstants.DATA_KEY_MSG)) {
             String msg = intent.getStringExtra(GCMUtilsConstants.DATA_KEY_MSG);
-            Log.i(GCMUtilsConstants.TAG, "msg received: " + msg);
+            GCMUtilsLog.i("msg received: ", msg);
             onMessage(context, msg);
         }
     }
@@ -41,13 +41,13 @@ public abstract class GCMUtilsBaseIntentService extends GCMBaseIntentService {
 
     @Override
     protected void onRegistered(Context context, String regId) {
-        Log.i(GCMUtilsConstants.TAG, "onRegistered, regId=" + regId);
+        GCMUtilsLog.i("onRegistered, regId=", regId);
         GCMUtils.createRegSender(GCMUtilsProperties.GCMUTILS.getReceiverUrl(), regId).send();
     }
 
     @Override
     protected void onUnregistered(Context context, String regId) {
-        Log.i(GCMUtilsConstants.TAG, "onUnregistered, regId=" + regId);
+        GCMUtilsLog.i("onUnregistered, regId=", regId);
         GCMUtils.createUnregSender(GCMUtilsProperties.GCMUTILS.getReceiverUrl(), regId).send();
     }
 }

@@ -2,9 +2,8 @@ package net.jarlehansen.android.gcm.client.sender;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
-import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
@@ -66,15 +65,15 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
         if (requestParams.size() == 0) {
             throw new IllegalArgumentException("There are no arguments sent to the GCMSender");
         } else {
-            Log.i(GCMUtilsConstants.TAG, "Sending request, backoff=" + backoffMillis + "ms retries=" + retries);
+            GCMUtilsLog.i("Sending request, backoff=" + backoffMillis, "ms retries=" + retries);
             AsyncTask<Void, Void, GCMSenderResponse> returnedValue = this.execute();
 
             try {
                 callback.onRequestSent(returnedValue.get());
             } catch (InterruptedException ie) {
-                Log.e(GCMUtilsConstants.TAG, "AsyncTask thread was interrupted while waiting", ie);
+                GCMUtilsLog.e("AsyncTask thread was interrupted while waiting", ie);
             } catch (ExecutionException ee) {
-                Log.e(GCMUtilsConstants.TAG, "AsyncTask computation threw an exception during execution", ee);
+                GCMUtilsLog.e("AsyncTask computation threw an exception during execution", ee);
             }
         }
     }
@@ -94,14 +93,14 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
             try {
                 Thread.sleep(backoff);
             } catch (InterruptedException ie) {
-                Log.w(GCMUtilsConstants.TAG, "Thread interrupted when waiting for new retry", ie);
+                GCMUtilsLog.w("Thread interrupted when waiting for new retry", ie);
             }
 
             if (counter > 0)
                 backoff *= 2;
 
             if (counter < retries) {
-                Log.i(GCMUtilsConstants.TAG, "Retry number " + (counter + 1) + ", waiting for: " + backoff + "ms");
+                GCMUtilsLog.i("Retry number " + (counter + 1), ", waiting for: " + backoff, "ms");
             }
         }
 
@@ -132,12 +131,12 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
 
             int responseCode = connection.getResponseCode();
             String responseMessage = connection.getResponseMessage();
-            Log.i(GCMUtilsConstants.TAG, "Response message:" + responseMessage + " code:" + responseCode);
+            GCMUtilsLog.i("Response message:", responseMessage, " code:" + responseCode);
 
             return new GCMSenderResponse(responseCode, responseMessage);
         } catch (IOException io) {
             String errorMsg = "Unable to send registration request to: " + receiverUrl;
-            Log.e(GCMUtilsConstants.TAG, errorMsg, io);
+            GCMUtilsLog.e(errorMsg, io);
             return new GCMSenderResponse(errorMsg, io);
         } finally {
             if (connection != null)
@@ -157,7 +156,7 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
         }
 
         String requestBodyString = requestBody.toString();
-        Log.d(GCMUtilsConstants.TAG, "Request body: " + requestBodyString);
+        GCMUtilsLog.d("Request body: ", requestBodyString);
         return requestBodyString;
     }
 }

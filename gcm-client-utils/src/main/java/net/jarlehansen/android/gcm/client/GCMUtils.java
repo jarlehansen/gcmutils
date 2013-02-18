@@ -1,11 +1,13 @@
 package net.jarlehansen.android.gcm.client;
 
 import android.content.Context;
-import android.util.Log;
 import com.google.android.gcm.GCMRegistrar;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
+import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
+import net.jarlehansen.android.gcm.client.sender.DefaultGCMSenderCallback;
 import net.jarlehansen.android.gcm.client.sender.GCMSender;
+import net.jarlehansen.android.gcm.client.sender.GCMSenderCallback;
 import net.jarlehansen.android.gcm.client.sender.GCMSenderImpl;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -132,16 +134,27 @@ public enum GCMUtils {
      * Reads the {@code receiver-url(required)}, {@code request-backoff-millis(optional)} and {@code request-retries(optional)} properties from {@code gcmutils.properties}.
      */
     public static String getAndSendRegistrationId(Context context) {
+        return getAndSendRegistrationId(context, new DefaultGCMSenderCallback());
+    }
+
+    /**
+     * Add a callback class to be notified after the GCM registration request has been sent.
+     *
+     * @see #getAndSendRegistrationId(android.content.Context)
+     */
+    public static String getAndSendRegistrationId(Context context, GCMSenderCallback callback) {
         String receiverUrl = getReceiverUrl(context);
         String senderId = getSenderId(context);
 
         String regId = GCMRegistrar.getRegistrationId(context);
         if (regId == null || "".equals(regId)) {
-            Log.i(GCMUtilsConstants.TAG, "No previous registration id, starting registration process");
+            GCMUtilsLog.i("No previous registration id, starting registration process");
             GCMRegistrar.register(context, senderId);
         } else {
-            Log.i(GCMUtilsConstants.TAG, "Retrieving previous registration id");
+            GCMUtilsLog.i("Retrieving previous registration id");
             GCMSender sender = GCMUtils.createRegSender(receiverUrl, regId);
+            sender.setCallback(callback);
+
             populateOptionalProperties(sender, context);
             sender.send();
         }
