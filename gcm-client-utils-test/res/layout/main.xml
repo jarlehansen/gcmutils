@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:id="@+id/regButton"/>
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:text="Registration id:"
+    android:textStyle="bold"/>
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="123dp"
+            android:id="@+id/regIdView" android:layout_gravity="left|center_vertical" android:editable="false"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Message:"
+            android:id="@+id/textView" android:layout_gravity="left|center_vertical" android:textStyle="bold"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/msgTextView" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"/>
+</LinearLayout>

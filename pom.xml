@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.jarlehansen.android.gcm</groupId>
+    <artifactId>gcm-utils</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <repositories>
+        <repository>
+            <id>ooo-maven-repo</id>
+            <url>http://ooo-maven.googlecode.com/hg/repository</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <android.version>2.3.3</android.version>
+        <gcm.version>r3</gcm.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <modules>
+        <module>gcm-common-utils</module>
+        <module>gcm-manifest-utils</module>
+        <module>gcm-client-utils</module>
+        <module>gcm-client-utils-test</module>
+        <module>gcm-client-sample</module>
+    </modules>
+</project>
