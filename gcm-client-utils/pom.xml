@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.jarlehansen.android.gcm</groupId>
     <artifactId>gcm-client-utils</artifactId>
-    <version>0.5.0-SNAPSHOT</version>
+    <version>0.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>net.jarlehansen.android.gcm</groupId>
         <artifactId>gcm-utils</artifactId>
-        <version>0.5.0-SNAPSHOT</version>
+        <version>0.6.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>

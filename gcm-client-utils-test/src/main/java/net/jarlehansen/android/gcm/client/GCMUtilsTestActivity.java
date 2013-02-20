@@ -18,8 +18,6 @@ public class GCMUtilsTestActivity extends Activity {
     static final String DISPLAY_INFO_ACTION = "net.jarlehansen.android.gcm.client.DISPLAY_INFO_ACTION";
     static final String DATA_KEY_REG_ID = "regId";
 
-    static final String SERVER_URL = "http://10.0.2.2:10246";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         GCMUtilsLog.i("Started: ", this.getClass().getSimpleName());
