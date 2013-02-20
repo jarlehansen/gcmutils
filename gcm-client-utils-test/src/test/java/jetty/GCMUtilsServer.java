@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -51,6 +52,16 @@ public class GCMUtilsServer {
 
             @Override
             protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+                StringBuilder sb = new StringBuilder();
+                Enumeration<String> parameters = request.getParameterNames();
+                while (parameters.hasMoreElements()) {
+                    sb.append(parameters.nextElement());
+
+                    if (parameters.hasMoreElements())
+                        sb.append(", ");
+                }
+                logger.info("Request parameter names: {}", sb.toString());
+
                 String regIdParam = request.getParameter(GCMUtilsConstants.PARAM_KEY_REGID);
                 String unregIdParam = request.getParameter(GCMUtilsConstants.PARAM_KEY_UNREGID);
                 if (regIdParam != null) {

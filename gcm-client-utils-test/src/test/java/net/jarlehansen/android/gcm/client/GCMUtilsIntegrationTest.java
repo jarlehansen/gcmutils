@@ -1,5 +1,6 @@
 package net.jarlehansen.android.gcm.client;
 
+import android.content.pm.ApplicationInfo;
 import android.os.AsyncTask;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import net.jarlehansen.android.gcm.client.sender.GCMSenderCallback;
@@ -13,6 +14,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -109,5 +110,21 @@ public class GCMUtilsIntegrationTest extends AbstractTestSetup {
         assertFalse(GCMSenderResponse.ok());
         assertEquals(-1, GCMSenderResponse.getCode());
         assertNotNull(GCMSenderResponse.getThrowable());
+    }
+
+
+    @Test
+    public void checkExtended() throws IOException {
+        ApplicationInfo applicationInfo = Mockito.mock(ApplicationInfo.class);
+        applicationInfo.flags = 0;
+
+        try {
+            super.openTestFile();
+            when(context.getApplicationInfo()).thenReturn(applicationInfo);
+
+            GCMUtils.checkExtended(context); // should be disabled in properties-file
+        } finally {
+            super.closeTestFile();
+        }
     }
 }

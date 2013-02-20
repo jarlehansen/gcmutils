@@ -19,4 +19,5 @@ public enum GCMUtilsConstants {
     public static final String PROPS_KEY_SENDERID = "sender-id";
     public static final String PROPS_KEY_BACKOFF = "request-backoff-millis";
     public static final String PROPS_KEY_RETRIES = "request-retries";
+    public static final String PROPS_KEY_CHECKEXTENDED = "check-extended";
 }

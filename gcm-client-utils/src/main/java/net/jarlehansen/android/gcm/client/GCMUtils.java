@@ -1,6 +1,7 @@
 package net.jarlehansen.android.gcm.client;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import com.google.android.gcm.GCMRegistrar;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
 import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
@@ -176,6 +177,27 @@ public enum GCMUtils {
      * </pre>
      */
     public static void checkExtended(Context context) {
-        GCMUtilsVerifier.checkExtended(context);
+        String checkExtended = getProperty(GCMUtilsConstants.PROPS_KEY_CHECKEXTENDED, context);
+
+        if (isCheckExtendedEnabled(checkExtended, context.getApplicationInfo().flags, ApplicationInfo.FLAG_DEBUGGABLE))
+            GCMUtilsVerifier.checkExtended(context);
+        else
+            GCMUtilsLog.i("Extended check is disabled");
+    }
+
+    // package-protected for testing
+    static boolean isCheckExtendedEnabled(String checkExtended, int flags, int debugFlag) {
+        boolean enabled = false;
+
+        if ("enabled".equals(checkExtended))
+            enabled = true;
+        else if ("".equals(checkExtended)) {
+            if ((flags &= debugFlag) != 0)
+                enabled = true;
+            else
+                GCMUtilsLog.i("ApplicationInfo.FLAG_DEBUGGABLE is set to false");
+        }
+
+        return enabled;
     }
 }

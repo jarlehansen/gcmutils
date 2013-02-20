@@ -156,7 +156,7 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
         }
 
         String requestBodyString = requestBody.toString();
-        GCMUtilsLog.d("Request body: ", requestBodyString);
+        GCMUtilsLog.i("Request body: ", requestBodyString);
         return requestBodyString;
     }
 }

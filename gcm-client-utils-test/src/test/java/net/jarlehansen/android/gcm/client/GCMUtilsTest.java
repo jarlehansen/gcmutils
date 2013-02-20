@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * User: Jarle Hansen (hansjar@gmail.com)
@@ -46,5 +46,35 @@ public class GCMUtilsTest extends AbstractTestSetup {
     public void createSender_list() {
         GCMSender sender = GCMUtils.createSender("http://localhost:8080", new BasicNameValuePair("", ""));
         assertNotNull(sender);
+    }
+
+    @Test
+    public void isCheckExtendedEnabled() {
+        assertTrue(GCMUtils.isCheckExtendedEnabled("enabled", 2, 2));
+    }
+
+    @Test
+    public void isCheckExtendedEnabled_disabled() {
+        assertFalse(GCMUtils.isCheckExtendedEnabled("disabled", 2, 2));
+    }
+
+    @Test
+    public void isCheckExtendedEnabled_debuggable() {
+        assertTrue(GCMUtils.isCheckExtendedEnabled("", 2, 2));
+    }
+
+    @Test
+    public void isCheckExtendedEnabled_notDebuggable() {
+        assertFalse(GCMUtils.isCheckExtendedEnabled("", 0, 2));
+    }
+
+    @Test
+    public void isCheckExtendedEnabled_zeroFlags() {
+        assertFalse(GCMUtils.isCheckExtendedEnabled("", 2, 0));
+    }
+
+    @Test
+    public void isCheckExtendedEnabled_bothFlagsDisabled() {
+        assertFalse(GCMUtils.isCheckExtendedEnabled("", 0, 0));
     }
 }
