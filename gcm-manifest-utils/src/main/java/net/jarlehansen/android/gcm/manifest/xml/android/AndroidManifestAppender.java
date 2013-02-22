@@ -40,16 +40,26 @@ public class AndroidManifestAppender implements AndroidAppender {
             DocumentBuilder builder = factory.newDocumentBuilder();
 
             Document document = builder.parse(inputFile);
+            document.setXmlStandalone(true);
             Element manifestElement = document.getDocumentElement();
 
             createReceiver(xmlParts, document);
             createService(xmlParts, document);
 
-            createUsesPermission(xmlParts, document, manifestElement, XmlKeys.USES_PERMISSION_5);
-            createUsesPermission(xmlParts, document, manifestElement, XmlKeys.USES_PERMISSION_4);
-            createUsesPermission(xmlParts, document, manifestElement, XmlKeys.USES_PERMISSION_3);
-            createUsesPermission(xmlParts, document, manifestElement, XmlKeys.USES_PERMISSION_2);
-            createUsesPermission(xmlParts, document, manifestElement, packageName + XmlKeys.USES_PERMISSION_1);
+            if (!xmlParts.containsUsesPermission5())
+                createUsesPermission(document, manifestElement, XmlKeys.USES_PERMISSION_5);
+
+            if (!xmlParts.containsUsesPermission4())
+                createUsesPermission(document, manifestElement, XmlKeys.USES_PERMISSION_4);
+
+            if (!xmlParts.containsUsesPermission3())
+                createUsesPermission(document, manifestElement, XmlKeys.USES_PERMISSION_3);
+
+            if (!xmlParts.containsUsesPermission2())
+                createUsesPermission(document, manifestElement, XmlKeys.USES_PERMISSION_2);
+
+            if (!xmlParts.containsUsesPermission1())
+                createUsesPermission(document, manifestElement, packageName + XmlKeys.USES_PERMISSION_1);
 
             createPermission(xmlParts, document, manifestElement);
             createUsesSdk(xmlParts, document, manifestElement);
@@ -61,6 +71,11 @@ public class AndroidManifestAppender implements AndroidAppender {
             StreamResult result = new StreamResult(outputFile);
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.VERSION, "1.0");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
             transformer.transform(source, result);
         } catch (ParserConfigurationException e) {
             throwXmlException(e);
@@ -79,7 +94,7 @@ public class AndroidManifestAppender implements AndroidAppender {
         if (!xmlParts.containsUsesSdk()) {
             Element usesSdk = document.createElement("uses-sdk");
             usesSdk.setAttribute("android:minSdkVersion", XmlKeys.USES_SDK);
-            manifestElement.insertBefore(usesSdk, manifestElement.getFirstChild());
+            insertBeforeApplicationTag(usesSdk, manifestElement);
         }
     }
 
@@ -88,26 +103,21 @@ public class AndroidManifestAppender implements AndroidAppender {
             Element permission = document.createElement("permission");
             permission.setAttribute("android:name", packageName + XmlKeys.PERMISSION);
             permission.setAttribute("android:protectionLevel", "signature");
-            manifestElement.insertBefore(permission, manifestElement.getFirstChild());
+            insertBeforeApplicationTag(permission, manifestElement);
         }
     }
 
-    private void createUsesPermission(XmlParts xmlParts, Document document, Element manifestElement, String permission) {
-        if (!xmlParts.containsUsesPermission5()) {
-            Element usesPermission5 = document.createElement("uses-permission");
-            usesPermission5.setAttribute("android:name", permission);
-            manifestElement.insertBefore(usesPermission5, manifestElement.getFirstChild());
-        }
+    private void createUsesPermission(Document document, Element manifestElement, String permission) {
+        Element usesPermission = document.createElement("uses-permission");
+        usesPermission.setAttribute("android:name", permission);
+        insertBeforeApplicationTag(usesPermission, manifestElement);
     }
 
     private void createService(XmlParts xmlParts, Document document) {
         if (!xmlParts.containsService()) {
             Element service = document.createElement("service");
             service.setAttribute("android:name", XmlKeys.SERVICE);
-
-            NodeList tags = document.getElementsByTagName("application");
-            Node application = tags.item(0);
-            application.insertBefore(service, application.getFirstChild());
+            insertInsideApplicationTag(service, document);
         }
     }
 
@@ -132,10 +142,20 @@ public class AndroidManifestAppender implements AndroidAppender {
             category.setAttribute("android:name", packageName);
             intentFilter.appendChild(category);
 
-            NodeList tags = document.getElementsByTagName("application");
-            Node application = tags.item(0);
-            application.insertBefore(receiver, application.getFirstChild());
+            insertInsideApplicationTag(receiver, document);
         }
+    }
+
+    private void insertInsideApplicationTag(Element element, Document document) {
+        NodeList tags = document.getElementsByTagName("application");
+        Node application = tags.item(0);
+        application.insertBefore(element, application.getFirstChild());
+    }
+
+    private void insertBeforeApplicationTag(Element child, Element root) {
+        NodeList tags = root.getElementsByTagName("application");
+        Node application = tags.item(0);
+        root.insertBefore(child, application);
     }
 
     private void throwXmlException(Throwable t) {
