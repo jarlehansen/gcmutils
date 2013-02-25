@@ -5,3 +5,4 @@ default.properties
 gcmutils.properties
 target
 tmp
+AndroidManifest-backup.xml

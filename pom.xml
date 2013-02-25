@@ -2,18 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>net.jarlehansen.android.gcm</groupId>
     <artifactId>gcm-utils</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.6.0</version>
     <packaging>pom</packaging>
-
-    <repositories>
-        <repository>
-            <id>ooo-maven-repo</id>
-            <url>http://ooo-maven.googlecode.com/hg/repository</url>
-        </repository>
-    </repositories>
 
     <properties>
         <android.version>2.3.3</android.version>
@@ -28,6 +20,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>ooo-maven-repo</id>
+            <url>http://ooo-maven.googlecode.com/hg/repository</url>
+        </repository>
+    </repositories>
 
     <distributionManagement>
         <repository>
@@ -59,8 +58,10 @@
         <module>gcm-client-utils</module>
         <module>gcm-client-utils-test</module>
         <module>gcm-client-sample</module>
-        <module>gcm-manifest-main</module>
+
+        <!-- Manifest generation -->
         <module>gcm-manifest-utils</module>
+        <module>gcm-manifest-main</module>
         <module>gcmutils-maven-plugin</module>
         <module>gcmutils-maven-plugin-test</module>
     </modules>

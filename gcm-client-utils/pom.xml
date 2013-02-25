@@ -3,22 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.jarlehansen.android.gcm</groupId>
     <artifactId>gcm-client-utils</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>net.jarlehansen.android.gcm</groupId>
-        <artifactId>gcm-utils</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <artifactId>gcmutils-parent</artifactId>
+        <relativePath>../gcmutils-parent</relativePath>
+        <version>0.6.0</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>net.jarlehansen.android.gcm</groupId>
             <artifactId>gcm-common-utils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>gcm-client</artifactId>
+            <version>${gcm.version}</version>
         </dependency>
 
         <dependency>
@@ -27,22 +32,5 @@
             <version>${android.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>gcm-client</artifactId>
-            <version>${gcm.version}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-2</version>
-            </extension>
-        </extensions>
-    </build>
 </project>

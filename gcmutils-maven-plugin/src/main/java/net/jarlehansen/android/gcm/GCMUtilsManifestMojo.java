@@ -24,7 +24,7 @@ import org.slf4j.impl.StaticLoggerBinder;
 /**
  * Goal which touches a timestamp file.
  *
- * @goal manifest
+ * @goal gcmify
  * @requiresProject true
  * @requiresDirectInvocation true
  */

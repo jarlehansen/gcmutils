@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.jarlehansen.android.gcm</groupId>
+    <artifactId>gcmutils-parent</artifactId>
+    <version>0.6.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <android.version>2.3.3</android.version>
+        <gcm.version>r3</gcm.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>ooo-maven-repo</id>
+            <url>http://ooo-maven.googlecode.com/hg/repository</url>
+        </repository>
+        <repository>
+            <id>gcmutils-repo-releases</id>
+            <url>http://gcmutils.googlecode.com/svn/trunk/repository/releases</url>
+        </repository>
+        <repository>
+            <id>gcmutils-repo-snapshots</id>
+            <url>http://gcmutils.googlecode.com/svn/trunk/repository/snapshots</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>gcmutils-repo-releases</id>
+            <url>dav:https://gcmutils.googlecode.com/svn/trunk/repository/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>gcmutils-repo-snapshots</id>
+            <url>dav:https://gcmutils.googlecode.com/svn/trunk/repository/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <modules>
+        <module>../gcm-common-utils</module>
+        <module>../gcm-client-utils</module>
+        <module>../gcm-manifest-utils</module>
+        <module>../gcmutils-maven-plugin</module>
+    </modules>
+</project>

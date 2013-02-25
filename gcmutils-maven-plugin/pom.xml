@@ -5,21 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.jarlehansen.android.gcm.plugins</groupId>
     <artifactId>gcmutils-maven-plugin</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
-    <name>gcmutils-maven-plugin Maven Mojo</name>
 
     <parent>
-        <artifactId>gcm-utils</artifactId>
         <groupId>net.jarlehansen.android.gcm</groupId>
-        <version>0.6.0-SNAPSHOT</version>
+        <artifactId>gcmutils-parent</artifactId>
+        <relativePath>../gcmutils-parent</relativePath>
+        <version>0.6.0</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>net.jarlehansen.android.gcm</groupId>
             <artifactId>gcm-manifest-utils</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -33,22 +32,5 @@
             <artifactId>slf4j-maven-plugin-log</artifactId>
             <version>1.0.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
-    <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-2</version>
-            </extension>
-        </extensions>
-    </build>
 </project>
