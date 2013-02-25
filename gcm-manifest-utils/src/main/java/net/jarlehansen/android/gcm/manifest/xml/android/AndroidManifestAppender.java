@@ -2,6 +2,8 @@ package net.jarlehansen.android.gcm.manifest.xml.android;
 
 import net.jarlehansen.android.gcm.manifest.xml.android.parts.XmlKeys;
 import net.jarlehansen.android.gcm.manifest.xml.android.parts.XmlParts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,6 +25,8 @@ import java.io.IOException;
  * Time: 9:14 AM
  */
 public class AndroidManifestAppender implements AndroidAppender {
+    private static final Logger logger = LoggerFactory.getLogger(AndroidManifestAppender.class);
+
     private final File inputFile;
     private final File outputFile;
     private final String packageName;
@@ -92,6 +96,7 @@ public class AndroidManifestAppender implements AndroidAppender {
 
     private void createUsesSdk(XmlParts xmlParts, Document document, Element manifestElement) {
         if (!xmlParts.containsUsesSdk()) {
+            logger.info("Appending uses-sdk tag");
             Element usesSdk = document.createElement("uses-sdk");
             usesSdk.setAttribute("android:minSdkVersion", XmlKeys.USES_SDK);
             insertBeforeApplicationTag(usesSdk, manifestElement);
@@ -100,6 +105,7 @@ public class AndroidManifestAppender implements AndroidAppender {
 
     private void createPermission(XmlParts xmlParts, Document document, Element manifestElement) {
         if (!xmlParts.containsPermission()) {
+            logger.info("Appending permission tag");
             Element permission = document.createElement("permission");
             permission.setAttribute("android:name", packageName + XmlKeys.PERMISSION);
             permission.setAttribute("android:protectionLevel", "signature");
@@ -108,6 +114,7 @@ public class AndroidManifestAppender implements AndroidAppender {
     }
 
     private void createUsesPermission(Document document, Element manifestElement, String permission) {
+        logger.info("Appending uses-permission tag ({})", permission);
         Element usesPermission = document.createElement("uses-permission");
         usesPermission.setAttribute("android:name", permission);
         insertBeforeApplicationTag(usesPermission, manifestElement);
@@ -123,6 +130,7 @@ public class AndroidManifestAppender implements AndroidAppender {
 
     private void createReceiver(XmlParts xmlParts, Document document) {
         if (!xmlParts.containsReceiver()) {
+            logger.info("Appending receiver tag");
             Element receiver = document.createElement("receiver");
             receiver.setAttribute("android:name", XmlKeys.RECEIVER);
             receiver.setAttribute("android:permission", XmlKeys.RECEIVER_PERMISSION);

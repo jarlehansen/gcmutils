@@ -22,7 +22,7 @@
         <dependency>
             <groupId>net.jarlehansen.android.gcm</groupId>
             <artifactId>gcm-client-utils</artifactId>
-            <version>${pom.parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

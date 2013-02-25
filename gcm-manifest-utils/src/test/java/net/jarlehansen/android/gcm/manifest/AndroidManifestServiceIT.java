@@ -31,13 +31,22 @@ public class AndroidManifestServiceIT {
     }
 
     @Test
+    public void execute_completeGCMManifest() {
+        AndroidManifestService service = new AndroidManifestService("src/test/resources/AndroidManifest.xml", outputFile.getAbsolutePath(), "net.jarlehansen.android.gcm");
+        service.execute();
+        AndroidManifest manifest = new AndroidManifestDeserializer(outputFile).deserialize();
+
+        XmlParts xmlParts = service.populateXmlParts(manifest);
+
+        assertCompleteManifest(xmlParts);
+    }
+
+    @Test
     public void execute_noGCMManifest() {
-        AndroidManifestService service = new AndroidManifestService("src/test/resources/NoGCM-AndroidManifest.xml", outputFile.getAbsolutePath(),
-                "net.jarlehansen.android.gcm");
+        AndroidManifestService service = new AndroidManifestService("src/test/resources/NoGCM-AndroidManifest.xml", outputFile.getAbsolutePath(), "net.jarlehansen.android.gcm");
         service.execute();
 
-        AndroidManifestDeserializer deserializer = new AndroidManifestDeserializer(outputFile);
-        AndroidManifest manifest = deserializer.deserialize();
+        AndroidManifest manifest = new AndroidManifestDeserializer(outputFile).deserialize();
 
         XmlParts xmlParts = service.populateXmlParts(manifest);
 
@@ -46,13 +55,9 @@ public class AndroidManifestServiceIT {
 
     @Test
     public void execute_partialManifest() {
-
-        AndroidManifestService service = new AndroidManifestService("src/test/resources/Partial-AndroidManifest.xml", outputFile.getAbsolutePath(),
-                "net.jarlehansen.android.gcm");
+        AndroidManifestService service = new AndroidManifestService("src/test/resources/Partial-AndroidManifest.xml", outputFile.getAbsolutePath(), "net.jarlehansen.android.gcm");
         service.execute();
-
-        AndroidManifestDeserializer deserializer = new AndroidManifestDeserializer(outputFile);
-        AndroidManifest manifest = deserializer.deserialize();
+        AndroidManifest manifest = new AndroidManifestDeserializer(outputFile).deserialize();
 
         XmlParts xmlParts = service.populateXmlParts(manifest);
 

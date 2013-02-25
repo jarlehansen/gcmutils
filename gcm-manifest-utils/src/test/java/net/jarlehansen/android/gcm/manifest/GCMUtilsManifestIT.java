@@ -8,10 +8,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -19,7 +22,8 @@ import static org.junit.Assert.assertTrue;
  * Date: 2/22/13
  * Time: 12:19 PM
  */
-public class MainIT {
+public class GCMUtilsManifestIT {
+    private static final Logger logger = LoggerFactory.getLogger(GCMUtilsManifestIT.class);
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -32,27 +36,14 @@ public class MainIT {
         inputFile = folder.newFile();
     }
 
-
     @Test
     public void main_noGCMManifest() throws IOException {
         File manifestFile = new File("src/test/resources/NoGCM-AndroidManifest.xml");
         createBackupFile(manifestFile);
 
-        Main.main(new String[]{inputFile.getAbsolutePath(), "net.jarlehansen.android.test"});
+        GCMUtilsManifest.start(inputFile.getAbsolutePath(), "net.jarlehansen.android.test", false);
 
         assertTrue(backupFile.isFile());
-        assertCompleteManifest(inputFile);
-    }
-
-    @Test
-    public void main_noGCMManifest_skipBackup() throws IOException {
-        File manifestFile = new File("src/test/resources/NoGCM-AndroidManifest.xml");
-        createBackupFile(manifestFile);
-
-        System.setProperty("skipBackup", "true");
-
-        Main.main(new String[]{inputFile.getAbsolutePath(), "net.jarlehansen.android.test"});
-
         assertCompleteManifest(inputFile);
     }
 
@@ -61,7 +52,7 @@ public class MainIT {
         File manifestFile = new File("src/test/resources/Partial-AndroidManifest.xml");
         createBackupFile(manifestFile);
 
-        Main.main(new String[]{inputFile.getAbsolutePath(), "net.jarlehansen.android.test"});
+        GCMUtilsManifest.start(inputFile.getAbsolutePath(), "net.jarlehansen.android.test", false);
 
         assertTrue(backupFile.isFile());
         assertCompleteManifest(inputFile);
@@ -72,25 +63,36 @@ public class MainIT {
         File manifestFile = new File("src/test/resources/AndroidManifest.xml");
         createBackupFile(manifestFile);
 
-        Main.main(new String[]{inputFile.getAbsolutePath(), "net.jarlehansen.android.test"});
+        GCMUtilsManifest.start(inputFile.getAbsolutePath(), "net.jarlehansen.android.test", false);
 
-        assertTrue(backupFile.isFile());
         assertCompleteManifest(inputFile);
     }
 
+    @Test
+    public void main_noGCMManifest_skipBackup() throws IOException {
+        File manifestFile = new File("src/test/resources/NoGCM-AndroidManifest.xml");
+        createBackupFile(manifestFile);
+
+        System.setProperty("skipBackup", "true");
+
+        GCMUtilsManifest.start(inputFile.getAbsolutePath(), "net.jarlehansen.android.test", true);
+
+        assertFalse(backupFile.isFile());
+        assertCompleteManifest(inputFile);
+    }
+
+
     private void createBackupFile(File manifestFile) throws IOException {
         FileUtils.copyFile(manifestFile, inputFile);
-        backupFile = Main.getBackupFile(inputFile);
+        backupFile = GCMUtilsManifest.getBackupFile(inputFile);
+        logger.info("Backup file: {}", backupFile.getAbsolutePath());
     }
 
     private void assertCompleteManifest(File file) {
         assertTrue(inputFile.isFile());
 
-        AndroidManifestDeserializer deserializer = new AndroidManifestDeserializer(file);
-        AndroidManifest manifest = deserializer.deserialize();
-
-        AndroidManifestService service = new AndroidManifestService("", "", "");
-        XmlParts xmlParts = service.populateXmlParts(manifest);
+        AndroidManifest manifest = new AndroidManifestDeserializer(file).deserialize();
+        XmlParts xmlParts = new AndroidManifestService("", "", "").populateXmlParts(manifest);
 
         assertTrue(xmlParts.containsUsesSdk());
         assertTrue(xmlParts.containsPermission());

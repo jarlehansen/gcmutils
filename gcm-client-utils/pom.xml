@@ -18,7 +18,7 @@
         <dependency>
             <groupId>net.jarlehansen.android.gcm</groupId>
             <artifactId>gcm-common-utils</artifactId>
-            <version>${pom.parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

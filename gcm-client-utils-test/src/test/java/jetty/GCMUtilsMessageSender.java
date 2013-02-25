@@ -14,7 +14,7 @@ import java.net.URLEncoder;
  * Time: 1:35 PM
  */
 public class GCMUtilsMessageSender {
-    private static Logger logger = LoggerFactory.getLogger(GCMUtilsMessageSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(GCMUtilsMessageSender.class);
 
     public static void main(String[] args) throws IOException {
         String msg = "this is a test message";
