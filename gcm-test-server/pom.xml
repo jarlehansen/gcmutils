@@ -18,6 +18,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>gcm-server</artifactId>
+            <version>${gcm.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-servlet_3.0_spec</artifactId>
             <version>1.0</version>
@@ -40,6 +46,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

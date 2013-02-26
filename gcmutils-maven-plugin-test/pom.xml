@@ -57,6 +57,7 @@
                 <configuration>
                     <manifestPath>target/AndroidManifest.xml</manifestPath>
                     <skipBackup>false</skipBackup>
+                    <!-- <apiKey></apiKey> -->
                 </configuration>
             </plugin>
         </plugins>

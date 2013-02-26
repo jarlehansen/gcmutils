@@ -1,0 +1,2 @@
+Start server with:
+java -jar gcm-test-server.jar api-key port-number context-root
