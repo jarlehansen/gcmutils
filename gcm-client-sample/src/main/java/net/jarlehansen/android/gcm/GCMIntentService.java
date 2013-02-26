@@ -14,7 +14,6 @@ public class GCMIntentService extends GCMUtilsBaseIntentService {
 
     @Override
     protected void onMessage(Context context, String msg) {
-        Log.i(TAG, "Message received: " + msg);
         Intent intent = new Intent(SimpleGCMUtilsActivity.MSG_ACTION);
         intent.putExtra(GCMUtilsConstants.DATA_KEY_MSG, msg);
         context.sendBroadcast(intent);
