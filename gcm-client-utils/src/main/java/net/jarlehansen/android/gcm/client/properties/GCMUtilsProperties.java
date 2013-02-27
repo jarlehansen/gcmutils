@@ -29,7 +29,7 @@ public enum GCMUtilsProperties {
     }
 
     // For testing
-    void reset() {
+    public void reset() {
         properties = null;
     }
 

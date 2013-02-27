@@ -12,6 +12,7 @@ public enum GCMUtilsConstants {
 
     public static final String PARAM_KEY_REGID = "regId";
     public static final String PARAM_KEY_UNREGID = "unregId";
+    public static final String PARAM_KEY_EMAIL = "email";
 
     public static final String DATA_KEY_MSG = "msg";
 

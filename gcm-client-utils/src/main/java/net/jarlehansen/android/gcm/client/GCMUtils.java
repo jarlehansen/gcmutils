@@ -5,16 +5,13 @@ import android.content.pm.ApplicationInfo;
 import com.google.android.gcm.GCMRegistrar;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
 import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
-import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
 import net.jarlehansen.android.gcm.client.sender.DefaultGCMSenderCallback;
 import net.jarlehansen.android.gcm.client.sender.GCMSender;
 import net.jarlehansen.android.gcm.client.sender.GCMSenderCallback;
 import net.jarlehansen.android.gcm.client.sender.GCMSenderImpl;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Utilities for Google Cloud Messaging.
@@ -33,39 +30,6 @@ import java.util.List;
 public enum GCMUtils {
     ;
 
-    private static GCMSender createSender(String param, String receiverUrl, String regId) {
-        List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair(param, regId));
-
-        return new GCMSenderImpl(receiverUrl, nameValuePairs);
-    }
-
-    private static String getProperty(String key, Context context) {
-        boolean initialized = GCMUtilsProperties.GCMUTILS.init(context);
-        if (initialized) {
-            return GCMUtilsProperties.GCMUTILS.get(key);
-        } else
-            throw new IllegalArgumentException("Unable to load properties file '" + GCMUtilsProperties.GCMUTILS.getFileName() + "'");
-    }
-
-    private static String getReceiverUrl(Context context) {
-        return getProperty(GCMUtilsConstants.PROPS_KEY_RECEIVERURL, context);
-    }
-
-    private static String getSenderId(Context context) {
-        return getProperty(GCMUtilsConstants.PROPS_KEY_SENDERID, context);
-    }
-
-    private static void populateOptionalProperties(GCMSender sender, Context context) {
-        String backoffMillis = getProperty(GCMUtilsConstants.PROPS_KEY_BACKOFF, context);
-        String numOfRetries = getProperty(GCMUtilsConstants.PROPS_KEY_RETRIES, context);
-
-        if (backoffMillis.length() > 0)
-            sender.setBackoffMillis(Integer.parseInt(backoffMillis));
-
-        if (numOfRetries.length() > 0)
-            sender.setRetries(Integer.parseInt(numOfRetries));
-    }
 
     /**
      * Create a sender with custom name-value-pairs.
@@ -80,10 +44,9 @@ public enum GCMUtils {
      * @see #createSender(String, org.apache.http.message.BasicNameValuePair...)
      */
     public static GCMSender createSender(Context context, BasicNameValuePair... valuePairs) {
-        String receiverUrl = getReceiverUrl(context);
-
+        String receiverUrl = GCMUtility.getReceiverUrl(context);
         GCMSender sender = createSender(receiverUrl, valuePairs);
-        populateOptionalProperties(sender, context);
+        GCMUtility.populateOptionalProperties(sender, context);
 
         return sender;
     }
@@ -92,7 +55,7 @@ public enum GCMUtils {
      * Create registrationId sender. Uses {@link GCMUtilsConstants#PARAM_KEY_REGID}.
      */
     public static GCMSender createRegSender(String receiverUrl, String regId) {
-        return GCMUtils.createSender(GCMUtilsConstants.PARAM_KEY_REGID, receiverUrl, regId);
+        return GCMUtility.createSender(GCMUtilsConstants.PARAM_KEY_REGID, receiverUrl, regId);
     }
 
     /**
@@ -101,18 +64,35 @@ public enum GCMUtils {
      * @see #createRegSender(String, String)
      */
     public static GCMSender createRegSender(Context context, String regId) {
-        String receiverUrl = getReceiverUrl(context);
+        String receiverUrl = GCMUtility.getReceiverUrl(context);
         GCMSender sender = GCMUtils.createRegSender(receiverUrl, regId);
-        populateOptionalProperties(sender, context);
-
+        GCMUtility.populateOptionalProperties(sender, context);
         return sender;
+    }
+
+    /**
+     * Sends both registration id and email address. If no email address is registered on the device, the email parameter is not sent.
+     * If multiple accounts are registered, the first one is selected.
+     *
+     * @see #createRegSender(android.content.Context, String)
+     */
+    public static GCMSender createRegAndEmailSender(Context context, String regId) {
+        BasicNameValuePair mainAccount = GCMUtility.getMainAccount(context);
+        if (mainAccount == null) {
+            return GCMUtils.createRegSender(context, regId);
+        } else {
+            BasicNameValuePair valuePairRegId = new BasicNameValuePair(GCMUtilsConstants.PARAM_KEY_REGID, regId);
+            GCMSender sender = GCMUtils.createSender(context, valuePairRegId, mainAccount);
+            GCMUtility.populateOptionalProperties(sender, context);
+            return sender;
+        }
     }
 
     /**
      * Create sender for unregistration. Uses {@link GCMUtilsConstants#PARAM_KEY_UNREGID}.
      */
     public static GCMSender createUnregSender(String receiverUrl, String regId) {
-        return GCMUtils.createSender(GCMUtilsConstants.PARAM_KEY_UNREGID, receiverUrl, regId);
+        return GCMUtility.createSender(GCMUtilsConstants.PARAM_KEY_UNREGID, receiverUrl, regId);
     }
 
     /**
@@ -121,11 +101,28 @@ public enum GCMUtils {
      * @see #createUnregSender(String, String)
      */
     public static GCMSender createUnregSender(Context context, String regId) {
-        String receiverUrl = getReceiverUrl(context);
+        String receiverUrl = GCMUtility.getReceiverUrl(context);
         GCMSender sender = GCMUtils.createUnregSender(receiverUrl, regId);
-        populateOptionalProperties(sender, context);
-
+        GCMUtility.populateOptionalProperties(sender, context);
         return sender;
+    }
+
+    /**
+     * Sends both registration id and email address. If no email address is registered on the device, the email parameter is not sent.
+     * If multiple accounts are registered, the first one is selected.
+     *
+     * @see #createUnregSender(android.content.Context, String)
+     */
+    public static GCMSender createUnregAndEmailSender(Context context, String regId) {
+        BasicNameValuePair mainAccount = GCMUtility.getMainAccount(context);
+        if (mainAccount == null) {
+            return GCMUtils.createUnregSender(context, regId);
+        } else {
+            BasicNameValuePair valuePairUnregId = new BasicNameValuePair(GCMUtilsConstants.PARAM_KEY_UNREGID, regId);
+            GCMSender sender = GCMUtils.createSender(context, valuePairUnregId, mainAccount);
+            GCMUtility.populateOptionalProperties(sender, context);
+            return sender;
+        }
     }
 
     /**
@@ -134,29 +131,57 @@ public enum GCMUtils {
      * <p/>
      * Reads the {@code receiver-url(required)}, {@code request-backoff-millis(optional)} and {@code request-retries(optional)} properties from {@code gcmutils.properties}.
      */
-    public static String getAndSendRegistrationId(Context context) {
-        return getAndSendRegistrationId(context, new DefaultGCMSenderCallback());
+    public static String getAndSendRegId(Context context) {
+        return getAndSendRegId(context, new DefaultGCMSenderCallback());
+    }
+
+    /**
+     * Sends both registration id and email address. If no email address is registered on the device, the email parameter is not sent.
+     * If multiple accounts are registered, the first one is selected.
+     *
+     * @see #getAndSendRegId(android.content.Context)
+     */
+    public static String getAndSendRegIdAndEmail(Context context) {
+        return getAndSendRegIdAndEmail(context, new DefaultGCMSenderCallback());
     }
 
     /**
      * Add a callback class to be notified after the GCM registration request has been sent.
      *
-     * @see #getAndSendRegistrationId(android.content.Context)
+     * @see #getAndSendRegId(android.content.Context)
      */
-    public static String getAndSendRegistrationId(Context context, GCMSenderCallback callback) {
-        String receiverUrl = getReceiverUrl(context);
-        String senderId = getSenderId(context);
+    public static String getAndSendRegId(Context context, GCMSenderCallback callback) {
+        return GCMUtils.getAndSendRegParameters(context, callback, null);
+    }
 
+    /**
+     * Add a callback class to be notified after the GCM registration request has been sent.
+     *
+     * @see #getAndSendRegIdAndEmail(android.content.Context)
+     */
+    public static String getAndSendRegIdAndEmail(Context context, GCMSenderCallback callback) {
+        return getAndSendRegParameters(context, callback, GCMUtility.getMainAccount(context));
+    }
+
+    private static String getAndSendRegParameters(Context context, GCMSenderCallback callback, BasicNameValuePair additionalParam) {
         String regId = GCMRegistrar.getRegistrationId(context);
+        String receiverUrl = GCMUtility.getReceiverUrl(context);
+        String senderId = GCMUtility.getSenderId(context);
+
+        BasicNameValuePair valuePairRegId = new BasicNameValuePair(GCMUtilsConstants.PARAM_KEY_REGID, regId);
         if (regId == null || "".equals(regId)) {
             GCMUtilsLog.i("No previous registration id, starting registration process");
             GCMRegistrar.register(context, senderId);
         } else {
             GCMUtilsLog.i("Retrieving previous registration id");
-            GCMSender sender = GCMUtils.createRegSender(receiverUrl, regId);
-            sender.setCallback(callback);
+            final GCMSender sender;
+            if (additionalParam == null)
+                sender = GCMUtils.createSender(receiverUrl, valuePairRegId);
+            else
+                sender = GCMUtils.createSender(receiverUrl, valuePairRegId, additionalParam);
 
-            populateOptionalProperties(sender, context);
+            sender.setCallback(callback);
+            GCMUtility.populateOptionalProperties(sender, context);
             sender.send();
         }
 
@@ -177,7 +202,7 @@ public enum GCMUtils {
      * </pre>
      */
     public static void checkExtended(Context context) {
-        String checkExtended = getProperty(GCMUtilsConstants.PROPS_KEY_CHECKEXTENDED, context);
+        String checkExtended = GCMUtility.getProperty(GCMUtilsConstants.PROPS_KEY_CHECKEXTENDED, context);
 
         if (isCheckExtendedEnabled(checkExtended, context.getApplicationInfo().flags, ApplicationInfo.FLAG_DEBUGGABLE))
             GCMUtilsVerifier.checkExtended(context);

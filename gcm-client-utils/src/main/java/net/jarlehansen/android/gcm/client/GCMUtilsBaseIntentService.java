@@ -5,7 +5,6 @@ import android.content.Intent;
 import com.google.android.gcm.GCMBaseIntentService;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
 import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
-import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
 
 /**
  * Provides a few simple helper methods. The {@link #onMessage(android.content.Context, String)} simply parses String messages sent with the {@code GCMUtilsConstants.DATA_KEY_MSG}.
@@ -42,12 +41,12 @@ public abstract class GCMUtilsBaseIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String regId) {
         GCMUtilsLog.i("onRegistered, regId=", regId);
-        GCMUtils.createRegSender(GCMUtilsProperties.GCMUTILS.getReceiverUrl(), regId).send();
+        GCMUtils.createRegAndEmailSender(context, regId).send();
     }
 
     @Override
     protected void onUnregistered(Context context, String regId) {
         GCMUtilsLog.i("onUnregistered, regId=", regId);
-        GCMUtils.createUnregSender(GCMUtilsProperties.GCMUTILS.getReceiverUrl(), regId).send();
+        GCMUtils.createUnregAndEmailSender(context, regId).send();
     }
 }

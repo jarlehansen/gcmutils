@@ -38,7 +38,7 @@ public class GCMUtilsTestActivity extends Activity {
 
         GCMRegistrar.checkDevice(this);
         GCMUtils.checkExtended(this);
-        String regId = GCMUtils.getAndSendRegistrationId(this);
+        String regId = GCMUtils.getAndSendRegIdAndEmail(this);
         showRegId(regId);
     }
 
