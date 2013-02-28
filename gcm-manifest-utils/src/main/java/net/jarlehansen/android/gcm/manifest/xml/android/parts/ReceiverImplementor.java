@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class ReceiverImplementor implements XmlImplementor {
 
-    @Override
     public void populateXmlParts(XmlParts xmlParts, AndroidManifest androidManifest) {
         Application application = androidManifest.getApplication();
         if (application == null) {

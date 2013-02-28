@@ -13,7 +13,6 @@ import java.util.List;
  */
 public class UsesPermissionImplementor implements XmlImplementor {
 
-    @Override
     public void populateXmlParts(XmlParts xmlParts, AndroidManifest androidManifest) {
         List<UsesPermission> usesPermissions = androidManifest.getUsesPermissions();
         if (usesPermissions == null)

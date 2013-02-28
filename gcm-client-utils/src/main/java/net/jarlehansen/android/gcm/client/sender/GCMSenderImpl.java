@@ -99,9 +99,8 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
             if (counter > 0)
                 backoff *= 2;
 
-            if (counter < retries) {
+            if (counter < retries)
                 GCMUtilsLog.i("Retry number " + (counter + 1), ", waiting for: " + backoff, "ms");
-            }
         }
 
         return errorResponse;
@@ -121,7 +120,7 @@ public class GCMSenderImpl extends AsyncTask<Void, Void, GCMSenderResponse> impl
             connection.setDoOutput(true);
             connection.setUseCaches(false);
             connection.setFixedLengthStreamingMode(contentBody.length);
-            connection.setConnectTimeout(30000);
+            connection.setConnectTimeout(20000);
 
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");

@@ -33,8 +33,6 @@ public class GCMUtilsTestServerMojo extends AbstractMojo {
      */
     private String contextRoot;
 
-
-    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         StaticLoggerBinder.getSingleton().setLog(getLog());
         try {

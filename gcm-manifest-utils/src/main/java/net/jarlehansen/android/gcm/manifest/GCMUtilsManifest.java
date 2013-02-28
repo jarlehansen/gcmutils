@@ -13,11 +13,10 @@ import java.io.IOException;
  * Date: 2/14/13
  * Time: 2:02 PM
  */
-public class GCMUtilsManifest {
-    private static final Logger logger = LoggerFactory.getLogger(GCMUtilsManifest.class);
+public enum GCMUtilsManifest {
+    ;
 
-    private GCMUtilsManifest() {
-    }
+    private static final Logger logger = LoggerFactory.getLogger(GCMUtilsManifest.class);
 
     public static void start(String manifestPath, String packageName, boolean skipBackup) {
         File manifestFile = new File(manifestPath);

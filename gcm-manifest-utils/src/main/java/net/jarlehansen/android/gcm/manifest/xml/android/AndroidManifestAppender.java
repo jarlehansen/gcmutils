@@ -37,7 +37,6 @@ public class AndroidManifestAppender implements AndroidAppender {
         this.packageName = packageName;
     }
 
-    @Override
     public void append(XmlParts xmlParts) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

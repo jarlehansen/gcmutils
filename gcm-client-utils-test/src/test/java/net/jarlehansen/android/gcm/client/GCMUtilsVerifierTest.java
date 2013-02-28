@@ -3,6 +3,7 @@ package net.jarlehansen.android.gcm.client;
 import android.content.pm.PackageInfo;
 import android.content.pm.ServiceInfo;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,34 +14,39 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RobolectricTestRunner.class)
 public class GCMUtilsVerifierTest {
+    private PackageInfo packageInfo;
+    private ServiceInfo serviceInfo;
+    private ServiceInfo[] services;
+
+    @Before
+    public void setUp() {
+        packageInfo = new PackageInfo();
+        serviceInfo = new ServiceInfo();
+        services = new ServiceInfo[]{serviceInfo};
+    }
 
     @Test
     public void checkService() {
-        PackageInfo packageInfo = new PackageInfo();
-        ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.name = GCMIntentService.class.getName();
-        packageInfo.services = new ServiceInfo[]{serviceInfo};
+        packageInfo.services = services;
         GCMUtilsVerifier.checkService(GCMIntentService.class.getPackage().getName(), packageInfo);
     }
 
     @Test(expected = IllegalStateException.class)
     public void checkService_nullServices() {
-        GCMUtilsVerifier.checkService("invalid.package", new PackageInfo());
+        GCMUtilsVerifier.checkService("invalid.package", packageInfo);
     }
 
     @Test(expected = IllegalStateException.class)
     public void checkService_noServices() {
-        PackageInfo packageInfo = new PackageInfo();
-        packageInfo.services = new ServiceInfo[]{new ServiceInfo()};
+        packageInfo.services = services;
         GCMUtilsVerifier.checkService("invalid.package", packageInfo);
     }
 
     @Test(expected = IllegalStateException.class)
     public void checkService_noGCMService() {
-        PackageInfo packageInfo = new PackageInfo();
-        ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.name = "MyService";
-        packageInfo.services = new ServiceInfo[]{serviceInfo};
+        packageInfo.services = services;
         GCMUtilsVerifier.checkService("invalid.package", packageInfo);
     }
 

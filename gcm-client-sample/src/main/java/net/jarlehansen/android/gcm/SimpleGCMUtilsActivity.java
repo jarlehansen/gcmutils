@@ -37,6 +37,6 @@ public class SimpleGCMUtilsActivity extends Activity {
 
         GCMRegistrar.checkDevice(this);
         GCMUtils.checkExtended(this);
-        GCMUtils.getAndSendRegIdAndEmail(this);
+        GCMUtils.getAndSendRegId(this);
     }
 }

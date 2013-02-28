@@ -141,6 +141,7 @@ public class GCMUtilsServlet extends HttpServlet {
             sb.append("<input type='submit' value='Remove registered devices'/>");
             sb.append("</form></body></html>");
         }
+
         return sb.toString();
     }
 }

@@ -40,9 +40,8 @@ public class GCMSenderResponse {
 
     @Override
     public String toString() {
-        return "GCMSenderResponse{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("GCMSenderResponse{code=").append(code).append(", message='").append(message).append("'}");
+        return sb.toString();
     }
 }

@@ -46,7 +46,6 @@ public class GCMUtilsTestActivity extends Activity {
         Button regButton = (Button) findViewById(R.id.regButton);
         regButton.setText("Unregister");
         regButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
                 unregister();
                 showRegisterButton();
@@ -61,7 +60,6 @@ public class GCMUtilsTestActivity extends Activity {
         Button regButton = (Button) findViewById(R.id.regButton);
         regButton.setText("Register");
         regButton.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
                 register();
                 showUnregisterButton();

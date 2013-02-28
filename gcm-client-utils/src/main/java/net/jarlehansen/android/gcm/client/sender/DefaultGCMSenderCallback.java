@@ -8,7 +8,6 @@ import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
  * Time: 10:37 AM
  */
 public class DefaultGCMSenderCallback implements GCMSenderCallback {
-    @Override
     public void onRequestSent(GCMSenderResponse response) {
         GCMUtilsLog.i("Status from regIdSender: ", response.toString());
     }

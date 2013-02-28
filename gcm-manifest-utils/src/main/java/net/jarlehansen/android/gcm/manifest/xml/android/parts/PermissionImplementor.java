@@ -13,12 +13,10 @@ import java.util.List;
  */
 public class PermissionImplementor implements XmlImplementor {
 
-    @Override
     public void populateXmlParts(XmlParts xmlParts, AndroidManifest androidManifest) {
         List<Permission> permissions = androidManifest.getPermissions();
-        if (permissions == null) {
+        if (permissions == null)
             permissions = new ArrayList<Permission>();
-        }
 
         boolean containsPermission = false;
         for (Permission permission : permissions) {

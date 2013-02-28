@@ -20,13 +20,17 @@ import java.util.List;
 enum GCMUtility {
     ;
 
+    private static volatile BasicNameValuePair mainEmailAccount = null;
+
     static BasicNameValuePair getMainAccount(Context context) {
-        GCMAccountManagement accountManagement = new GCMAccountManagementImpl();
-        String mainAccount = accountManagement.getMainAccount(context);
-        if (!"".equals(mainAccount))
-            return new BasicNameValuePair(GCMUtilsConstants.PARAM_KEY_EMAIL, mainAccount);
-        else
-            return null;
+        if (mainEmailAccount == null) {
+            GCMAccountManagement accountManagement = new GCMAccountManagementImpl();
+            String mainAccount = accountManagement.getMainAccount(context);
+            if (!"".equals(mainAccount))
+                mainEmailAccount = new BasicNameValuePair(GCMUtilsConstants.PARAM_KEY_EMAIL, mainAccount);
+        }
+
+        return mainEmailAccount;
     }
 
     static GCMSender createSender(String param, String receiverUrl, String regId) {

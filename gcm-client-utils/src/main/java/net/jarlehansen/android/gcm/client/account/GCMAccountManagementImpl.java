@@ -23,9 +23,8 @@ public class GCMAccountManagementImpl implements GCMAccountManagement {
     String getMainAccount(Account[] accounts, Pattern emailPattern) {
         String mainAccount = "";
         for (Account account : accounts) {
-            if (emailPattern.matcher(account.name).matches()) {
+            if (emailPattern.matcher(account.name).matches())
                 mainAccount = account.name;
-            }
         }
 
         if ("".equals(mainAccount))

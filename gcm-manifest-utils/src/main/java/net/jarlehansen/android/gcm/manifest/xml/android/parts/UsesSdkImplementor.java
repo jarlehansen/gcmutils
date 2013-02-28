@@ -10,7 +10,6 @@ import net.jarlehansen.android.gcm.manifest.xml.android.model.UsesSdk;
  */
 public class UsesSdkImplementor implements XmlImplementor {
 
-    @Override
     public void populateXmlParts(XmlParts xmlParts, AndroidManifest androidManifest) {
         UsesSdk usesSdk = androidManifest.getUsesSdk();
         if (usesSdk == null)

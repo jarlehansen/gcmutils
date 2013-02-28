@@ -30,7 +30,6 @@ import java.util.Arrays;
 public enum GCMUtils {
     ;
 
-
     /**
      * Create a sender with custom name-value-pairs.
      */

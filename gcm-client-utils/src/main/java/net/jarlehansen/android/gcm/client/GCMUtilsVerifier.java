@@ -16,6 +16,9 @@ import net.jarlehansen.android.gcm.client.log.GCMUtilsLog;
 enum GCMUtilsVerifier {
     ;
 
+    private static final String NO_GCM_SERVICE = "No GCMIntentService is configured";
+    private static final String INVALID_CONFIG_GCM_SERVIVE = "The GCMIntentService is not configured correctly";
+
     static void checkExtended(Context context) {
         GCMRegistrar.checkManifest(context);
 
@@ -24,7 +27,7 @@ enum GCMUtilsVerifier {
             PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), PackageManager.GET_SERVICES);
             checkService(context.getPackageName(), packageInfo);
         } catch (PackageManager.NameNotFoundException e) {
-            throw new IllegalStateException("No GCMIntentService is configured");
+            throw new IllegalStateException(NO_GCM_SERVICE);
         }
     }
 
@@ -44,7 +47,7 @@ enum GCMUtilsVerifier {
         }
 
         if (!includesGCMService)
-            throw new IllegalStateException("No GCMIntentService is configured");
+            throw new IllegalStateException(NO_GCM_SERVICE);
     }
 
     static void checkServiceClass(String serviceName) {
@@ -55,11 +58,11 @@ enum GCMUtilsVerifier {
             else
                 throw new IllegalStateException(o.getClass().getName() + " is not extending " + GCMBaseIntentService.class.getName());
         } catch (InstantiationException e) {
-            throw new IllegalStateException("The GCMIntentService is not configured correctly");
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException("The GCMIntentService is not configured correctly");
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("The GCMIntentService is not configured correctly");
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
         }
     }
 }

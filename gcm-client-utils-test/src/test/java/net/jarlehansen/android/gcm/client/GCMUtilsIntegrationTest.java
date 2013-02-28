@@ -41,7 +41,6 @@ public class GCMUtilsIntegrationTest extends AbstractTestSetup {
     public static void setUp() {
         server = new Server(10245);
         server.setHandler(new AbstractHandler() {
-            @Override
             public void handle(String s, Request baseRequest, HttpServletRequest request,
                                HttpServletResponse response) throws IOException, ServletException {
                 response.setStatus(HttpServletResponse.SC_OK);

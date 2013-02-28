@@ -6,6 +6,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 import net.jarlehansen.android.gcm.GCMUtilsConstants;
 import net.jarlehansen.android.gcm.client.properties.GCMUtilsProperties;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,31 +24,27 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class GCMUtilityTest extends AbstractTestSetup {
 
-    @After
-    public void tearDown() {
+    @Before
+    public void setUp() throws IOException {
+        super.openTestFile();
         GCMUtilsProperties.GCMUTILS.reset();
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        super.closeTestFile();
     }
 
     @Test
     public void getProperty_invalidKey() throws IOException {
-        try {
-            super.openTestFile();
-            String value = GCMUtility.getProperty("asd", context);
-            assertEquals("", value);
-        } finally {
-            super.closeTestFile();
-        }
+        String value = GCMUtility.getProperty("asd", context);
+        assertEquals("", value);
     }
 
     @Test
     public void getProperty_senderId() throws IOException {
-        try {
-            super.openTestFile();
-            String value = GCMUtility.getProperty(GCMUtilsConstants.PROPS_KEY_SENDERID, context);
-            assertEquals("test-project", value);
-        } finally {
-            super.closeTestFile();
-        }
+        String value = GCMUtility.getProperty(GCMUtilsConstants.PROPS_KEY_SENDERID, context);
+        assertEquals("test-project", value);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -62,23 +59,13 @@ public class GCMUtilityTest extends AbstractTestSetup {
 
     @Test
     public void getReceiverUrl() throws IOException {
-        try {
-            super.openTestFile();
-            String receiverUrl = GCMUtility.getReceiverUrl(context);
-            assertEquals("http://localhost", receiverUrl);
-        } finally {
-            super.closeTestFile();
-        }
+        String receiverUrl = GCMUtility.getReceiverUrl(context);
+        assertEquals("http://localhost", receiverUrl);
     }
 
     @Test
     public void getSenderId() throws IOException {
-        try {
-            super.openTestFile();
-            String receiverUrl = GCMUtility.getSenderId(context);
-            assertEquals("test-project", receiverUrl);
-        } finally {
-            super.closeTestFile();
-        }
+        String receiverUrl = GCMUtility.getSenderId(context);
+        assertEquals("test-project", receiverUrl);
     }
 }
