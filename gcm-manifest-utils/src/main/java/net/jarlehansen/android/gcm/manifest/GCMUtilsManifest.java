@@ -41,7 +41,7 @@ public enum GCMUtilsManifest {
         }
     }
 
-    static String createBackup(File manifestFile) {
+    private static String createBackup(File manifestFile) {
         File backup = getBackupFile(manifestFile);
         try {
             FileUtils.copyFile(manifestFile, backup);

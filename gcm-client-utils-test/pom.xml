@@ -11,7 +11,7 @@
         <groupId>net.jarlehansen.android.gcm</groupId>
         <artifactId>gcmutils-parent</artifactId>
         <relativePath>../gcmutils-parent</relativePath>
-        <version>0.7.0-SNAPSHOT</version>
+        <version>0.8.0-SNAPSHOT</version>
     </parent>
 
     <repositories>

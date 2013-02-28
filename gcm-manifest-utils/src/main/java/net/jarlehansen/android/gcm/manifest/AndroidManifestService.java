@@ -1,5 +1,7 @@
 package net.jarlehansen.android.gcm.manifest;
 
+import net.jarlehansen.android.gcm.manifest.xml.android.AndroidAppender;
+import net.jarlehansen.android.gcm.manifest.xml.android.AndroidDeserializer;
 import net.jarlehansen.android.gcm.manifest.xml.android.AndroidManifestAppender;
 import net.jarlehansen.android.gcm.manifest.xml.android.AndroidManifestDeserializer;
 import net.jarlehansen.android.gcm.manifest.xml.android.model.AndroidManifest;
@@ -25,32 +27,32 @@ public class AndroidManifestService {
 
     public void execute() {
         File inputFile = new File(inputFileName);
-        AndroidManifestDeserializer deserializer = new AndroidManifestDeserializer(inputFile);
+        AndroidDeserializer deserializer = new AndroidManifestDeserializer(inputFile);
         AndroidManifest manifest = deserializer.deserialize();
 
         XmlParts xmlParts = populateXmlParts(manifest);
 
         File outputFile = new File(outputFileName);
-        AndroidManifestAppender appender = new AndroidManifestAppender(inputFile, outputFile, packageName);
+        AndroidAppender appender = new AndroidManifestAppender(inputFile, outputFile, packageName);
         appender.append(xmlParts);
     }
 
     XmlParts populateXmlParts(AndroidManifest manifest) {
         XmlParts xmlParts = new XmlParts();
 
-        UsesSdkImplementor usesSdkImplementor = new UsesSdkImplementor();
+        XmlImplementor usesSdkImplementor = new UsesSdkImplementor();
         usesSdkImplementor.populateXmlParts(xmlParts, manifest);
 
-        PermissionImplementor permissionImplementor = new PermissionImplementor();
+        XmlImplementor permissionImplementor = new PermissionImplementor();
         permissionImplementor.populateXmlParts(xmlParts, manifest);
 
-        UsesPermissionImplementor usesPermissionImplementor = new UsesPermissionImplementor();
+        XmlImplementor usesPermissionImplementor = new UsesPermissionImplementor();
         usesPermissionImplementor.populateXmlParts(xmlParts, manifest);
 
-        ServiceImplementor serviceImplementor = new ServiceImplementor();
+        XmlImplementor serviceImplementor = new ServiceImplementor();
         serviceImplementor.populateXmlParts(xmlParts, manifest);
 
-        ReceiverImplementor receiverImplementor = new ReceiverImplementor();
+        XmlImplementor receiverImplementor = new ReceiverImplementor();
         receiverImplementor.populateXmlParts(xmlParts, manifest);
 
         return xmlParts;
