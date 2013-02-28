@@ -17,7 +17,7 @@ enum GCMUtilsVerifier {
     ;
 
     private static final String NO_GCM_SERVICE = "No GCMIntentService is configured";
-    private static final String INVALID_CONFIG_GCM_SERVIVE = "The GCMIntentService is not configured correctly";
+    private static final String INVALID_CONFIG_GCM_SERVICE = "The GCMIntentService is not configured correctly";
 
     static void checkExtended(Context context) {
         GCMRegistrar.checkManifest(context);
@@ -58,11 +58,11 @@ enum GCMUtilsVerifier {
             else
                 throw new IllegalStateException(o.getClass().getName() + " is not extending " + GCMBaseIntentService.class.getName());
         } catch (InstantiationException e) {
-            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVICE);
         } catch (IllegalAccessException e) {
-            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVICE);
         } catch (ClassNotFoundException e) {
-            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVIVE);
+            throw new IllegalStateException(INVALID_CONFIG_GCM_SERVICE);
         }
     }
 }
